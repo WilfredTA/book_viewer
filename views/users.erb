@@ -1,0 +1,49 @@
+<% def list_of_users %>
+	<% users = @users.keys.map(&:to_s) %>
+	<% yield(users) %>
+<% end %>
+
+
+
+<h2 class="content-subhead">
+	<% if params[:user] %>
+		<%= params[:user].capitalize %>
+	<% else %>
+		Users
+	<% end %>
+</h2>
+
+
+
+<% if params[:user] %>
+	  <% user = params[:user] %>
+	  <ul>
+	  	<li>Email: <%= @users[user.to_sym][:email] %></li>
+	  	<li>Interests: <%= @users[user.to_sym][:interests].join(', ') %></li>
+	  </ul>
+	  <% list_of_users do |array_of_users|  %>
+	  	<% array_of_users.each do |user| %>
+	  		<% if user != params[:user] %>
+	 			<ul>
+	  				<li> <%=  "<a href='/users/#{user}'> #{user.capitalize} </a>" %></li>
+	  			</ul>
+	  		<% end %>
+	  	<% end %>
+	  <% end %>
+
+
+<% else %>
+		<% list_of_users do |array_of_users| %>
+			<% array_of_users.each do |user| %>
+				<ul>
+	  				<li> <%=  "<a href='/users/#{user}'> #{user.capitalize} </a>" %></li>
+	  			</ul>
+	  		<% end %>
+	  	<% end %>
+<% end %>
+
+<p> There are <%= @users.keys.count %> users with a total of <%= count_interests %> interests. </p>
+
+
+
+	
